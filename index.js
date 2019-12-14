@@ -18,7 +18,7 @@ function displayResults(responseJson) {
     $('.results').html(info)
     console.log(responseJson.data.fullname)
 }
-function getParks(stateTerm, quantityTerm=10) {
+function getParks(stateTerm, quantityTerm = 10) {
     const params = {
         api_Key: apiKey,
         stateCode: stateTerm,
