@@ -18,13 +18,13 @@ function displayResults(responseJson) {
     $('.results').html(info)
     console.log(responseJson.data.fullname)
 }
-function getParks(stateTerm, quantityTerm = 10) {
+function getParks(stateTerm, limit=10) {
     const params = {
-        api_Key: apiKey,
         stateCode: stateTerm,
-        limit: quantityTerm
+        limit: limit,
+        api_Key: apiKey,
     };
-
+    console.log(params.limit)
     const queryString = formatQueryParams(params)
     const url = searchURL + "?" + queryString;
 
@@ -39,18 +39,27 @@ function getParks(stateTerm, quantityTerm = 10) {
         })
     .then(responseJson => displayResults(responseJson))
     .catch(err => {
-        $('#errors').text('There was an error.')
+        $('#errors').text('There was an error.');
     });
 }
 
 function watchForm() {
     $('form').submit(event => {
-    event.preventDefault();
-    const stateTerm = $('#state').val();
-    const quantityTerm = $('#quantity').val();
-    getParks(stateTerm, quantityTerm);
-    })
+        event.preventDefault();
+        const stateTerm = $('#state').val();
+        let limit = $('#quantity').val();
+        console.log(limit.length)
+        if (limit.length == 0) {
+            getParks(stateTerm, limit=10);
+        }
+        let limitNumber = Number.parseInt(limit);
+        console.log(Number.isNaN(limitNumber));
+        if (Number.isNaN(limitNumber)) {
+            alert("Not a number")
+        } else {
+            getParks(stateTerm, limit);
+        }
+    });
 }
-
 
 $(watchForm);
